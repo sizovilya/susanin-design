@@ -1,8 +1,3 @@
-/*!
- * Start Bootstrap - Landing Page Bootstrap Theme (http://startbootstrap.com)
- * Code licensed under the Apache License v2.0.
- * For details, see http://www.apache.org/licenses/LICENSE-2.0.
- */
 
 body,
 html {
@@ -100,6 +95,7 @@ h6 {
 
 .content-section-b {
     padding: 50px 0;
+    background-color: #f8f8f8;
 }
 
 .section-heading {
@@ -117,7 +113,7 @@ h6 {
 .banner {
     padding: 100px 0;
     color: #f8f8f8;
-    background: url(../img/banner-bg.jpg) no-repeat center center;
+    background: url(../img/photo-download.jpg) no-repeat center center;
     background-size: cover;
 }
 
