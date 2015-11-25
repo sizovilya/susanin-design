@@ -88,7 +88,8 @@
                     <hr class="intro-divider">
                     <ul class="list-inline intro-social-buttons">
                         <li>
-                            <a href="https://drive.google.com/file/d/0B_cXllOBjkWYbzk0NjZKRlpqeVE/view?usp=sharing" target="_blank" class="btn btn-default btn-lg"><i
+                            <a href="https://drive.google.com/file/d/0B_cXllOBjkWYbzk0NjZKRlpqeVE/view?usp=sharing"
+                               target="_blank" class="btn btn-default btn-lg"><i
                                     class="fa fa-download fa-fw"></i> <span class="network-name">Скачать</span></a>
                         </li>
                     </ul>
@@ -521,11 +522,13 @@
             <div class="col-lg-6">
                 <ul class="list-inline banner-social-buttons">
                     <li>
-                        <a href="https://drive.google.com/file/d/0B_cXllOBjkWYbzk0NjZKRlpqeVE/view?usp=sharing" target="_blank" class="btn btn-default btn-lg"><i
+                        <a href="https://drive.google.com/file/d/0B_cXllOBjkWYbzk0NjZKRlpqeVE/view?usp=sharing"
+                           target="_blank" class="btn btn-default btn-lg"><i
                                 class="fa fa-user fa-fw"></i> <span class="network-name">Для пользователей</span></a>
                     </li>
                     <li>
-                        <a href="https://drive.google.com/file/d/0B_cXllOBjkWYWllFdHpOQnluelE/view?usp=sharing" target="_blank"
+                        <a href="https://drive.google.com/file/d/0B_cXllOBjkWYWllFdHpOQnluelE/view?usp=sharing"
+                           target="_blank"
                            class="btn btn-default btn-lg"><i
                                 class="fa fa-code-fork fa-fw"></i> <span
                                 class="network-name">Для программистов</span></a>
@@ -557,7 +560,11 @@
             </div>
         </div>
         <div class="form-group">
-            <div style="display:none" class="alert alert-danger" role="alert">Необходимо ввести email и текст сообщения</div>
+            <div style="display:none" class="alert alert-danger" id="empty-error" role="alert">Необходимо ввести email и
+                текст сообщения
+            </div>
+            <div style="display:none" class="alert alert-danger" id="email-error" role="alert">Неправильный формат email
+            </div>
         </div>
         <div class="form-group">
             <a id="send" href=""
@@ -565,6 +572,8 @@
                     class="fa fa-envelope-o fa-fw"></i> <span class="network-name">Отправить</span></a>
         </div>
     </form>
+    <div style="display: none" class="alert alert-success" id="send-result" role="alert">Неправильный формат email
+    </div>
 
 </div>
 
@@ -588,18 +597,48 @@
 <script src="js/bootstrap.min.js"></script>
 
 <script type="text/javascript">
-$(document).ready(function(){
-    $('#send').on('click', function(e){
-        e.preventDefault();
-        var email = $('#email').val(),
-            body  = $('#body').val();
+    $(document).ready(function () {
+        $('#send').on('click', function (e) {
+            e.preventDefault();
+            var email = $('#email').val(),
+                    body = $('#body').val(),
+                    name = $('#name').val(),
+                    $emptyError = $('#empty-error'),
+                    $emailError = $('#email-error'),
+                    re = /^([\w-]+(?:\.[\w-]+)*)@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$/i;
 
-        if(email == '' || body == '')
-        {
-            
-        }
+            if (email == '' || body == '') {
+                $emptyError.show();
+                return;
+            }
+            else
+                $emptyError.hide();
+
+            if (!re.test(email)) {
+                $emailError.show();
+                return;
+            }
+            else
+                $emailError.hide();
+
+            $.ajax({
+                url: '/email',
+                type: 'Post',
+                dataType: 'json',
+                data: {
+                    name: name == '' ? name : 'не указано'
+                },
+                success: function (result) {
+                    var text = result ? 'Спасибо за Ваше внимание! Мы обязательно свяжемся с Вами.' : 'Ошибка сервера.';
+                    $('#send-result').text(text);
+                    $('#send-result').show();
+
+                }
+            });
+
+
+        });
     });
-});
 </script>
 
 </body>
