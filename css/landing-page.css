@@ -210,3 +210,8 @@ ul.ul-decoration li:before {
     text-align: center;
 }
 
+.for-scroll {
+    position: absolute;
+    margin-top: -40px;
+}
+
